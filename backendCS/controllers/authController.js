@@ -26,7 +26,7 @@ export const login = async (req, res) => {
   try {
     const user = await User.findOne({ username });
     if (user && (await bcrypt.compare(password, user.password))) {
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "30d" });
       res.json({ message: "Login successful", user , token : generateToken(user._id) });
     } else {
       res.status(401).json({ error: "Invalid credentials" });
@@ -37,5 +37,5 @@ export const login = async (req, res) => {
 };
 
 const generateToken = (id) => { 
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 }
